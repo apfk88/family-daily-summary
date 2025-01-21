@@ -41,6 +41,7 @@ TO_PHONE_NUMBERS="+15555555555,+15555555555"
 FROM_PHONE_NUMBER="+18005555555"
 AI_API_ENDPOINT="https://api.openai.com/v1/chat/completions"
 AI_MODEL="gpt-4"
+ADDITIONAL_CONTEXT="Additional personal context you'd like the model to know."
 ```
 
 Other configuration variables are stored in `wrangler.json`.
