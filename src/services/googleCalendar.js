@@ -58,11 +58,11 @@ export async function getGoogleAccessToken(serviceEmail, privateKey) {
 export async function fetchEvents(accessToken, calendarId) {
   // Get the current date in Pacific Time
   const now = DateTime.now().setZone('America/Los_Angeles');
-  const startOfDay = now.startOf('day');
-  const endOfDay = now.endOf('day');
+  const startOfToday = now.startOf('day');
+  const endOfTomorrow = now.plus({ days: 1 }).endOf('day');
 
-  const timeMin = startOfDay.toISO();
-  const timeMax = endOfDay.toISO();
+  const timeMin = startOfToday.toISO();
+  const timeMax = endOfTomorrow.toISO();
 
   const url = new URL(
     `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(calendarId)}/events`
@@ -112,5 +112,21 @@ export async function getAllEvents(env) {
     calendarName: "School Calendar"
   }));
 
-  return [...eventsFamilyWithCalendar, ...eventsSchoolWithCalendar];
+  const allEvents = [...eventsFamilyWithCalendar, ...eventsSchoolWithCalendar];
+  
+  // Sort events into today and tomorrow
+  const now = DateTime.now().setZone('America/Los_Angeles');
+  const startOfTomorrow = now.plus({ days: 1 }).startOf('day');
+  const endOfTomorrow = startOfTomorrow.endOf('day');
+
+  return {
+    today: allEvents.filter(event => {
+      const eventDate = DateTime.fromISO(event.start?.dateTime || event.start?.date);
+      return eventDate < startOfTomorrow;
+    }),
+    tomorrow: allEvents.filter(event => {
+      const eventDate = DateTime.fromISO(event.start?.dateTime || event.start?.date);
+      return eventDate >= startOfTomorrow && eventDate <= endOfTomorrow;
+    })
+  };
 } 

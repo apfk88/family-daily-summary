@@ -1,30 +1,42 @@
 export async function generateSummary(events, openaiApiKey, env, additionalContext) {
-  if (!events.length) {
-    return "No events today.";
+  if (!events.today.length && !events.tomorrow.length) {
+    return "No events today or tomorrow.";
   }
 
-  const rawEventsText = events.map((e) => {
-    const start = e.start?.dateTime || e.start?.date || "Unknown Start";
-    const title = e.summary || "No Title";
-    return `Event: ${title}, Start: ${start}`;
-  }).join("\n");
+  const formatEvents = (eventList) => {
+    return eventList.map((e) => {
+      const start = e.start?.dateTime || e.start?.date || "Unknown Start";
+      const title = e.summary || "No Title";
+      return `Event: ${title}, Start: ${start}`;
+    }).join("\n");
+  };
+
+  const todayEvents = formatEvents(events.today);
+  const tomorrowEvents = formatEvents(events.tomorrow);
 
   const prompt = `
-These are the day's events for our child's school and our family calendar. Take these events and summarize into a short summary that will be sent as a text message to myself and his mom to give us an overview and make sure we're aware of any important events.
+These are the events for today and tomorrow from our child's school calendar and family calendar. Take these events and summarize into a short summary that will be sent as a text message to their parents to give them an overview and make sure they're aware of any important events.
 
-If there are no events on either calendar, don't mention it. If there are duplicate events, only mention them once.
+Format the output as follows:
+Today: {list events}
+Tomorrow: {list events}
+
+Example:
+Today: Flag Football (3-4pm), Soccer (4-5pm)
+Tomorrow: President's Day
+
+If there are no events for a particular day, write "No events" for that day.
+If there are duplicate events, only mention them once.
 
 Do NOT use ** to style, this is a text message. Output nothing else.
 
-Output as such:
-
-School: {event 1}, {event 2}
-Family: {event 1}, {event 2}
-
 ${additionalContext ? `Additional Context: ${additionalContext}\n\n` : ''}
 
-Raw Events:
-${rawEventsText}
+Today's Events:
+${todayEvents || "None"}
+
+Tomorrow's Events:
+${tomorrowEvents || "None"}
 `;
 
   try {

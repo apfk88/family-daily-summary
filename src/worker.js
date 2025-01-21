@@ -18,10 +18,10 @@ export default {
 // This function does the entire workflow: get Google access token, pull events, summarize, and send SMS.
 export async function sendDailySummary(env) {
   try {
-    const allEvents = await getAllEvents(env);
-    const summary = await generateSummary(allEvents, env.AI_API_KEY, env);
+    const events = await getAllEvents(env);
+    const summary = await generateSummary(events, env.AI_API_KEY, env);
 
-    if (summary === "No events today.") {
+    if (summary === "No events today or tomorrow.") {
       console.log("No events to send.");
       return;
     }
@@ -46,8 +46,8 @@ export async function sendDailySummary(env) {
 // This function generates the message without sending it via Twilio
 export async function generateMessage(env) {
   try {
-    const allEvents = await getAllEvents(env);
-    return await generateSummary(allEvents, env.AI_API_KEY, env);
+    const events = await getAllEvents(env);
+    return await generateSummary(events, env.AI_API_KEY, env);
   } catch (err) {
     console.error("Error in message generation workflow:", err);
     return "Error generating message.";
