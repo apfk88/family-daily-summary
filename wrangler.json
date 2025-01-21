@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "family-calendar-summary",
+  "main": "src/worker.js",
+  "compatibility_date": "2025-01-01",
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": ["0 13 * * *"]
+  },
+  "vars": {
+    "AI_API_ENDPOINT": "https://api.openai.com/v1/chat/completions",
+    "AI_MODEL": "gpt-4"
+  }
+}
