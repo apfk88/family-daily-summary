@@ -1,0 +1,19 @@
+# Google Calendar API credentials
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n"
+GOOGLE_SERVICE_ACCOUNT_EMAIL="your-service-account@your-project.iam.gserviceaccount.com"
+FAMILY_CALENDAR_ID="your-family-calendar-id@group.calendar.google.com"
+SCHOOL_CALENDAR_ID="your-school-calendar-id@group.calendar.google.com"
+
+# OpenAI API configuration
+AI_API_KEY="your-openai-api-key"
+AI_API_ENDPOINT="https://api.openai.com/v1/chat/completions"
+AI_MODEL="gpt-4"
+
+# Twilio SMS configuration
+TWILIO_ACCOUNT_SID="your-twilio-account-sid"
+TWILIO_AUTH_TOKEN="your-twilio-auth-token"
+TO_PHONE_NUMBERS="+1234567890,+0987654321"  # Comma-separated list of phone numbers
+FROM_PHONE_NUMBER="+1234567890"  # Your Twilio phone number
+
+# Additional context for AI prompts (optional)
+ADDITIONAL_CONTEXT="Child's name, school, and any other relevant context" 

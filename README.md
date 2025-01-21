@@ -85,4 +85,20 @@ The worker runs automatically at 6 AM US/Pacific daily (configured in `wrangler.
 
 - Never commit `.dev.vars` or any files containing sensitive information
 - Use Cloudflare Workers Secrets for production environment variables
-- Ensure Google Service Account has minimal required permissions 
+- Ensure Google Service Account has minimal required permissions
+
+## Local Development Setup
+
+1. Copy `.dev.vars.template` to `.dev.vars`:
+   ```bash
+   cp .dev.vars.template .dev.vars
+   ```
+
+2. Fill in your actual credentials in `.dev.vars`:
+   - Google Calendar API credentials from your Google Cloud Console
+   - OpenAI API key from your OpenAI account
+   - Twilio credentials from your Twilio console
+   - Phone numbers for sending/receiving SMS notifications
+   - Any additional context you want to provide to the AI
+
+3. Never commit your `.dev.vars` file - it contains sensitive information! 
