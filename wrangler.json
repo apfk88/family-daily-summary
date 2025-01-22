@@ -11,6 +11,6 @@
   },
   "vars": {
     "AI_API_ENDPOINT": "https://api.openai.com/v1/chat/completions",
-    "AI_MODEL": "gpt-4"
+    "AI_MODEL": "gpt-4o"
   }
 }
