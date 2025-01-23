@@ -21,14 +21,18 @@ Format the output as follows:
 Today: {list events}
 Tomorrow: {list events}
 
+On this day: {a very brief, fun fact about this day in american history}
+
 Example:
 Today: Flag Football (3-4pm), Soccer (4-5pm)
 Tomorrow: President's Day
 
+On this day: JFK was assassinated.
+
 If there are no events for a particular day, write "No events" for that day.
 If there are duplicate events, only mention them once.
 
-Do NOT use ** to style, this is a text message. Output nothing else.
+Do NOT use ** to style, this is a text message. Output nothing else. Use /n to break lines.
 
 ${additionalContext ? `Additional Context: ${additionalContext}\n\n` : ''}
 
@@ -44,7 +48,8 @@ ${tomorrowEvents || "None"}
       model: env.AI_MODEL,
       messages: [
         { role: "user", content: prompt }
-      ]
+      ],
+      max_tokens: 100
     };
     
     console.log("Calling AI API with endpoint:", env.AI_API_ENDPOINT);
