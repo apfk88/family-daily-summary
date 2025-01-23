@@ -40,33 +40,64 @@ ${tomorrowEvents || "None"}
 `;
 
   try {
+    const requestBody = {
+      model: env.AI_MODEL,
+      messages: [
+        { role: "user", content: prompt }
+      ]
+    };
+    
+    console.log("Calling AI API with endpoint:", env.AI_API_ENDPOINT);
+    console.log("Using model:", env.AI_MODEL);
+    console.log("Request body:", JSON.stringify(requestBody, null, 2));
+
     const resp = await fetch(env.AI_API_ENDPOINT, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.AI_API_KEY}`,
       },
-      body: JSON.stringify({
-        model: env.AI_MODEL,
-        messages: [
-          { role: "user", content: prompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 100
-      }),
+      body: JSON.stringify(requestBody),
     });
 
-    const data = await resp.json();
-    console.log("AI Generated Message:", data?.choices?.[0]?.message?.content);
+    if (!resp.ok) {
+      const errorText = await resp.text();
+      console.error("AI API error response:", {
+        status: resp.status,
+        statusText: resp.statusText,
+        headers: Object.fromEntries(resp.headers.entries()),
+        body: errorText
+      });
+      throw new Error(`API request failed: ${resp.status} ${resp.statusText} - ${errorText}`);
+    }
 
-    if (data?.choices?.[0]?.message?.content) {
-      return data.choices[0].message.content.trim();
-    } else {
-      console.error("Unexpected response format:", data);
-      return "No summary available.";
+    let responseText;
+    try {
+      responseText = await resp.text();
+      console.log("Raw API response:", responseText);
+      const data = JSON.parse(responseText);
+      
+      console.log("Parsed API response:", data);
+
+      if (data?.choices?.[0]?.message?.content) {
+        return data.choices[0].message.content.trim();
+      } else {
+        console.error("Unexpected response format:", data);
+        return "No summary available - invalid response format.";
+      }
+    } catch (parseError) {
+      console.error("Failed to parse API response:", {
+        error: parseError,
+        responseText: responseText
+      });
+      throw new Error(`Failed to parse API response: ${parseError.message}`);
     }
   } catch (error) {
-    console.error("Error calling AI API:", error);
-    return "No summary available.";
+    console.error("Error in generateSummary:", {
+      error: error,
+      message: error.message,
+      stack: error.stack
+    });
+    return `No summary available - ${error.message}`;
   }
 } 

@@ -44,18 +44,43 @@ export async function handleDebugRequest(request, env, ctx) {
   } 
   
   if (url.pathname === "/get-events") {
-    console.log("Status: Getting events");
-    const events = await getAllEvents(env);
-    const simplifiedEvents = events.map(event => ({
-      summary: event.summary,
-      start: event.start.dateTime || event.start.date,
-      end: event.end.dateTime || event.end.date,
-      calendarName: event.calendarName
-    }));
-    console.log("Events:", simplifiedEvents);
-    return new Response(JSON.stringify(simplifiedEvents), {
-      headers: { "Content-Type": "application/json" },
-    });
+    console.log("Getting calendar events...");
+    try {
+      const eventData = await getAllEvents(env);
+      
+      if (!eventData || typeof eventData !== 'object') {
+        console.error("Invalid events data received:", eventData);
+        return new Response(JSON.stringify({ error: "Invalid events data received" }), {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        });
+      }
+
+      const simplifyEvents = events => events.map(event => ({
+        summary: event.summary,
+        start: event.start.dateTime || event.start.date,
+        end: event.end.dateTime || event.end.date,
+        calendarName: event.calendarName
+      }));
+
+      const simplifiedData = {
+        today: Array.isArray(eventData.today) ? simplifyEvents(eventData.today) : [],
+        tomorrow: Array.isArray(eventData.tomorrow) ? simplifyEvents(eventData.tomorrow) : []
+      };
+      
+      const eventCount = simplifiedData.today.length + simplifiedData.tomorrow.length;
+      console.log(`Found ${eventCount} events (${simplifiedData.today.length} today, ${simplifiedData.tomorrow.length} tomorrow)`);
+      
+      return new Response(JSON.stringify(simplifiedData), {
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (error) {
+      console.error("Failed to fetch events:", error.message);
+      return new Response(JSON.stringify({ error: error.message }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
   }
 
   return new Response("Invalid endpoint", { status: 404 });

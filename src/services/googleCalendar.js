@@ -77,11 +77,15 @@ export async function fetchEvents(accessToken, calendarId) {
       Authorization: `Bearer ${accessToken}`,
     },
   });
+
   const data = await resp.json();
+  console.log("Google Calendar API response:", data);
 
   if (!data.items) {
+    console.error("No items found in the response:", data);
     return [];
   }
+
   return data.items;
 }
 
