@@ -19,12 +19,14 @@ These are the events for today and tomorrow from our child's school calendar and
 
 Format the output as follows:
 Today: {list events}
+
 Tomorrow: {list events}
 
 On this day: {a very brief, fun fact about this day in american history}
 
 Example:
 Today: Flag Football (3-4pm), Soccer (4-5pm)
+
 Tomorrow: President's Day
 
 On this day: JFK was assassinated.
