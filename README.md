@@ -1,6 +1,8 @@
 # Family Daily Calendar Summary
 
-A Cloudflare Worker that sends daily calendar summaries via SMS. It fetches events from both family and school Google Calendars, summarizes them using OpenAI's GPT-4, and sends the summary through Twilio.
+Built this so my wife and I would get a text every morning summarizing events from our school and family calendars.
+
+A Cloudflare Worker that sends daily calendar summaries via SMS. It fetches events from both family and school Google Calendars, summarizes them using OpenAI, and sends the summary through Twilio.
 
 ## Features
 
@@ -16,9 +18,9 @@ A Cloudflare Worker that sends daily calendar summaries via SMS. It fetches even
 
 - Node.js and npm installed
 - Cloudflare Wrangler (auth'd into Cloudflare Workers account)
-- Google Calendar API access and Service Account
-- OpenAI API key
-- Twilio account
+- Google Calendar API access and Service Account (use AI to help walk you through setup)
+- OpenAI account
+- Twilio account (sucks to get setup)
 
 ```bash
 npm install -g wrangler
