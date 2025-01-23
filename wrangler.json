@@ -7,7 +7,7 @@
     "enabled": true
   },
   "triggers": {
-    "crons": ["0 13 * * *"]
+    "crons": ["30 14 * * *"]
   },
   "vars": {
     "AI_API_ENDPOINT": "https://api.openai.com/v1/chat/completions",
