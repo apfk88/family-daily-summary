@@ -2,6 +2,9 @@ import { DateTime } from 'luxon';
 import { toBase64Url, arrayBufferToBase64Url, pemToArrayBuffer } from '../utils';
 
 export async function getGoogleAccessToken(serviceEmail, privateKey) {
+  // Convert escaped newlines to actual newlines
+  const formattedKey = privateKey.replace(/\\n/g, '\n');
+  
   // JWT header and claim set
   const header = {
     alg: "RS256",
@@ -24,7 +27,7 @@ export async function getGoogleAccessToken(serviceEmail, privateKey) {
   // Sign the JWT using RSASSA-PKCS1-v1_5 with SHA-256
   const keyData = await crypto.subtle.importKey(
     "pkcs8",
-    pemToArrayBuffer(privateKey),
+    pemToArrayBuffer(formattedKey),
     {
       name: "RSASSA-PKCS1-v1_5",
       hash: "SHA-256",
