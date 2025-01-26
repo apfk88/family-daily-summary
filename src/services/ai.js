@@ -18,9 +18,9 @@ export async function generateSummary(events, openaiApiKey, env, additionalConte
 These are the events for today and tomorrow from our child's school calendar and family calendar. Take these events and summarize into a short summary that will be sent as a text message to their parents to give them an overview and make sure they're aware of any important events.
 
 Format the output as follows:
-Today: {list events}
+Today: {list events in chronological order}
 
-Tomorrow: {list events}
+Tomorrow: {list events in chronological order}
 
 On this day: {a very brief, fun fact about this day in american history}
 
@@ -30,6 +30,8 @@ Today: Flag Football (3-4pm), Soccer (4-5pm)
 Tomorrow: President's Day
 
 On this day: JFK was assassinated.
+
+---
 
 If there are no events for a particular day, write "No events" for that day.
 If there are duplicate events, only mention them once.
