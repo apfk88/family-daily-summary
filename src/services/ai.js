@@ -22,14 +22,10 @@ Today: {list events in chronological order}
 
 Tomorrow: {list events in chronological order}
 
-On this day: {a very brief, fun fact about this day in american history}
-
 Example:
 Today: Flag Football (3-4pm), Soccer (4-5pm)
 
 Tomorrow: President's Day
-
-On this day: JFK was assassinated.
 
 ---
 
